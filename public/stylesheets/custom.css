@@ -1,0 +1,20 @@
+/* All */
+
+
+/* Body */
+
+#town-select, #area-select{
+    float: left;
+}
+
+/* Footer */
+footer{
+    background-color: #333;
+    color: white;
+    padding-left: 2%;
+}
+
+.footer-copyright{
+    background-color: #333;
+    color: white;
+}

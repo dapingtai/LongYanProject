@@ -64,15 +64,19 @@ app.post('/orderSearch',
     console.log("Post API - Search Order");
     console.log(req.body);
     try {
-        let searchOrder = await Order.findOne({
-            name: req.body.name,
-            // phone: req.body.phone,
-            // _id: req.body.id
-        });
+        let searchOrder = await Order.findOne({name: req.body.name});
+
         if (searchOrder == null){
             res.status(200).send("查無此訂單");
         }else {
-            res.status(200).send("訂單接受中")
+            let endId = searchOrder._id.toString().substr(-3,3);
+            let endPhone = searchOrder.phone.substr(-3, 3);
+            // console.log(endPhone, endId);
+            if(endPhone == (req.body.phone) && endId == (req.body.id)){
+                res.status(200).send("訂單接受中");
+            }else {
+                res.status(200).send("清確認名稱，電話及訂單編號");
+            }
         }
 
     }catch (err) {

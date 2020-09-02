@@ -55,13 +55,16 @@
           </b-form-group>
 
           <b-form-group
+              v-for="commodity in commodities"
+              :key="commodity.name"
               label-cols-sm="3"
-              label="訂購數量:"
+              :label="`${commodity.name} 訂購數量:`"
               label-align-sm="right"
               label-for="nested-state"
           >
-            <b-form-spinbutton v-model="count" id="demo-sb" min="1" max="100" required>
-            </b-form-spinbutton>
+            <b-form-input class="text-center" v-model="commodity.count" id="nested-city" disabled>
+            </b-form-input>
+
           </b-form-group>
 
           <b-form-group
@@ -95,7 +98,7 @@
 
         <b-button type="submit" variant="primary" @click="submitOrder">提交訂單</b-button>
         &nbsp;
-        <b-button type="reset" variant="danger" href="/">返回商城</b-button>
+        <b-button type="reset" variant="danger" href="/">修改訂單</b-button>
 
       </b-card>
     </div>
@@ -106,15 +109,13 @@
 import CitySelect from "./CitySelect.vue";
 import OrderSearch from "./OrderSearch.vue";
 import axios from "axios";
+import Bus from './bus';
 
 export default {
   name: 'ShoppingCart',
   components: {
     CitySelect,
     OrderSearch
-  },
-  props: {
-    msg: String
   },
   data() {
     return{
@@ -123,10 +124,19 @@ export default {
       email : "",
       areanumber : 255,
       address : "",
-      count : 0,
       friendcode: "",
-      annotation : ""
+      annotation : "",
+      commodities: []
     }
+  },
+  mounted() {
+    // 透過Bus，傳入選購商品
+    Bus.$on('val',
+        (data)=>{
+          console.log(data);
+          this.commodities = data;
+        }
+    )
   },
   methods: {
     submitOrder() {
@@ -139,22 +149,53 @@ export default {
         area : this.$refs.cityChild.areas[this.$refs.cityChild.areaIndex],
         areanumber : this.$refs.cityChild.zip,
         address : this.address,
-        count : this.count,
+        commodities : this.commodities,
         friendcode: this.friendcode,
         annotation : this.annotation,
       }
       console.table(formData);
 
-      axios.post('http://localhost:81/', formData).then(
-          (res) =>{
+      // 回傳未填寫表單
+      let emptyform = [];
+      Object.values(formData).forEach(
+          (value, index)=>{
+            if (!value) {
+              switch (Object.keys(formData)[index]){
+                case "name":
+                  emptyform.push(" 姓名");
+                  break;
+                case "phone":
+                  emptyform.push(" 手機");
+                  break;
+                case "email":
+                  emptyform.push(" Email");
+                  break;
+                case "address":
+                  emptyform.push(" 詳細地址");
+                  break;
+                default:
+                  break;
+              }
+
+            }
+          }
+      )
+
+      if (emptyform.length > 0){
+        alert(`${emptyform} 未填寫`);
+      }else {
+        console.log("表單皆填寫，送出表單");
+        axios.post('http://localhost:81/', formData).then(
+            (res) =>{
               console.log(res);
               alert(`下訂成功，您的訂單編號為: ${res.data}`);
-          }
-      ).catch(
-        (err) => {
-          console.log(err);
-        }
-      )
+            }
+        ).catch(
+            (err) => {
+              console.log(err);
+            }
+        )
+      }
     }
   }
 

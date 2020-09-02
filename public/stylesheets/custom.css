@@ -8,7 +8,9 @@
 }
 
 /* Footer */
-footer{
+footer {
+    position: static;
+    /*top: 100px;*/
     background-color: #333;
     color: white;
     padding-left: 2%;

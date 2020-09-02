@@ -39,7 +39,7 @@ app.post('/',
         newOrder.area = req.body.area;
         newOrder.areanumber = req.body.areanumber;
         newOrder.address = req.body.address;
-        newOrder.count.longyan = req.body.count;
+        newOrder.count.longyan = req.body.commodities[0].count;
         newOrder.friendcode = req.body.friendcode;
         newOrder.annotation = req.body.annotation;
         newOrder.save(

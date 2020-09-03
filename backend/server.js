@@ -3,6 +3,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+/*Credential Information*/
+const credentials = require('../models/credentials');
+
 /*Mongo DB option */
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/LongYanProj');
@@ -13,10 +16,12 @@ const nodemailer = require('nodemailer');
 const mailTransport = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        user: 'dddapingtai@gmail.com',
-        pass: 'dapingtai88'
+        user: credentials.gmail.user,
+        pass: credentials.gmail.pass
     }
-})
+});
+const {emailMasterTemplate, emailCustomerTemplate} = require('../models/mailTemplate');
+
 
 const app = express();
 
@@ -26,7 +31,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'dist')));
 app.disable('x-powered-by');
 
-// Cors 預設全開放
+// Cors 預設全開放 // 之後要選定調整
 app.use(cors());
 
 // Restful API
@@ -35,7 +40,8 @@ app.get('/', function (req, res){
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 })
 
-app.post('/',
+// Insert Order
+app.post('/orderAdd',
     async (req, res) => {
     console.log("Post API - Insert Order");
     console.log(req.body);
@@ -68,20 +74,28 @@ app.post('/',
             {
                 from: '"LongYan Team": dapingtai@gmail.com',
                 to: req.body.email,
-                subject: '訂單確認通知',
-                html: `<div>
-                           <h1>${newOrder._id}-訂單通知</h1>
-                           <p>${newOrder.name}購買商品如下:</p>
-                           <p>龍眼乾${newOrder.count.longyan}份</p>
-                           <p>推薦好友為 - ${newOrder.friendcode}</p> 
-                           <a href="http://127.0.0.1:81/master/orderCheck/${newOrder._id}">
-                               確認訂單 
-                           </a>
-                       </div>
-                      `
+                subject: '[客戶]訂單確認通知',
+                html: emailCustomerTemplate(newOrder)
             },function(err) {
                 if (err) {
                     console.error('Unable to send confirmation: ', err.stack);
+                }else {
+                    console.log("Send confirm mail Success !");
+                }
+            }
+        )
+
+        mailTransport.sendMail(
+            {
+                from: '"LongYan Team": dapingtai@gmail.com',
+                to: "zero102x@gmail.com",
+                subject: '[老闆]訂單確認通知',
+                html: emailMasterTemplate(newOrder)
+            },function(err) {
+                if (err) {
+                    console.error('Unable to send confirmation: ', err.stack);
+                }else {
+                    console.log("Send confirm mail Success !");
                 }
             }
         )
@@ -93,6 +107,7 @@ app.post('/',
     }
 })
 
+// 訂單查找
 app.post('/orderSearch',
     async (req,res)=> {
     console.log("Post API - Search Order");
@@ -107,9 +122,19 @@ app.post('/orderSearch',
             let endPhone = searchOrder.phone.substr(-3, 3);
             // console.log(endPhone, endId);
             if(endPhone == (req.body.phone) && endId == (req.body.id)){
-                res.status(200).send("訂單接受中");
+                switch (searchOrder.status){
+                    case "Ready":
+                        res.status(200).send("訂單已送出-待確認");
+                        break;
+                    case "Accept":
+                        res.status(200).send("訂單已確認-配送中");
+                        break;
+                    case "Success":
+                        res.status(200).send("訂單已配送");
+                        break;
+                }
             }else {
-                res.status(200).send("清確認名稱，電話及訂單編號");
+                res.status(200).send("請確認查詢名稱，電話及訂單編號");
             }
         }
 
@@ -119,6 +144,7 @@ app.post('/orderSearch',
 
 })
 
+// Email確認訂單
 app.get('/master/orderCheck/:id', async function (req, res) {
     let orderId = req.params.id.toString();
     let checkId = await Order.findOne({_id: orderId});

@@ -8,6 +8,16 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/LongYanProj');
 const mongodb = mongoose.connection;
 
+/*Send Email Option*/
+const nodemailer = require('nodemailer');
+const mailTransport = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'dddapingtai@gmail.com',
+        pass: 'dapingtai88'
+    }
+})
+
 const app = express();
 
 const Order = require('../models/order');
@@ -42,6 +52,7 @@ app.post('/',
         newOrder.count.longyan = req.body.commodities[0].count;
         newOrder.friendcode = req.body.friendcode;
         newOrder.annotation = req.body.annotation;
+        newOrder.status = "Ready";
         newOrder.save(
             (err, order)=>{
                 if (err){
@@ -50,8 +61,31 @@ app.post('/',
                     console.log(`${order} is created`);
                 }
             }
-        )
+        );
         console.log(`${newOrder._id} Buy Success`);
+
+        mailTransport.sendMail(
+            {
+                from: '"LongYan Team": dapingtai@gmail.com',
+                to: req.body.email,
+                subject: '訂單確認通知',
+                html: `<div>
+                           <h1>${newOrder._id}-訂單通知</h1>
+                           <p>${newOrder.name}購買商品如下:</p>
+                           <p>龍眼乾${newOrder.count.longyan}份</p>
+                           <p>推薦好友為 - ${newOrder.friendcode}</p> 
+                           <a href="http://127.0.0.1:81/master/orderCheck/${newOrder._id}">
+                               確認訂單 
+                           </a>
+                       </div>
+                      `
+            },function(err) {
+                if (err) {
+                    console.error('Unable to send confirmation: ', err.stack);
+                }
+            }
+        )
+
         res.status(200).send(`${newOrder._id}`);
     }catch (e) {
         console.log(e);
@@ -85,6 +119,30 @@ app.post('/orderSearch',
 
 })
 
+app.get('/master/orderCheck/:id', async function (req, res) {
+    let orderId = req.params.id.toString();
+    let checkId = await Order.findOne({_id: orderId});
+    if (checkId){
+        if (checkId.status === "Accept"){
+            res.status(200).send("該訂單已接受");
+        }else {
+            checkId.status = "Accept";
+            checkId.save(
+                (err, order)=>{
+                    if (err){
+                        throw err;
+                    }else {
+                        console.log(`${order} accept success`);
+                        res.status(200).send("訂單完成接受");
+                    }
+                }
+            )
+        }
+    }else {
+        res.status(500).send("Order Empty")
+    }
+
+})
 
 // www
 app.listen(81, function () {

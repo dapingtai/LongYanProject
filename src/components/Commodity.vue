@@ -43,8 +43,8 @@ export default {
   name: "Commodity",
   data: ()=> ({
     items:[
-      {name:"龍眼乾", img:"", prices: 500, annotation:"正宗龍眼乾", count:0},
-      {name:"芒果乾", img:"", prices: 100, annotation:"茫茫芒果乾", count:0}
+      {name:"龍眼乾(3入組)", img:"", prices: 600, annotation:"老牌正宗龍眼乾", count:0},
+      {name:"龍眼乾(6入組)", img:"", prices: 1150, annotation:"超級正宗龍眼乾", count:0}
     ]
   }),
   methods:{

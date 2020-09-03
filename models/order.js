@@ -17,7 +17,8 @@ const OrederSchema = new mogoose.Schema({
     count:{
         longyan: {type: Number, required: true}
     },
-    annotation:{type: String}
+    annotation:{type: String},
+    status: {type: String, required: true}
 })
 
 module.exports = mogoose.model('Order', OrederSchema);

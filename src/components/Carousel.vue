@@ -140,7 +140,7 @@ img{
 .carousel-prev, .carousel-next {
   position: absolute;
   z-index: 10;
-  top: 280px;
+  top: 250px;
   transform: translateY(-50%);
   transition: opacity .3s;
   color: #b2b2b2;
@@ -162,7 +162,7 @@ img{
 .carousel-buttons {
   position: absolute;
   z-index: 10;
-  top: 480px; /*需參照img的高度*/
+  top: 450px; /*需參照img的高度*/
   width: 100%;
   margin: 0 auto;
   text-align: center;

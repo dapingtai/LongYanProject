@@ -73,7 +73,7 @@
               label-align-sm="right"
               label-for="nested-state"
           >
-            <b-form-input v-model="friendcode" id="nested-state" required>
+            <b-form-input class="text-center" v-model="friendcode" id="nested-state" disabled>
             </b-form-input>
           </b-form-group>
 
@@ -88,7 +88,7 @@
             <b-form-textarea
                 id="textarea-small"
                 size="sm"
-                placeholder="Tell us somethings"
+                placeholder="告訴我們還需要什麼~"
                 v-model="annotation"
             >
             </b-form-textarea>
@@ -98,7 +98,7 @@
 
         <b-button type="submit" variant="primary" @click="submitOrder">提交訂單</b-button>
         &nbsp;
-        <b-button type="reset" variant="danger" href="/">修改訂單</b-button>
+        <b-button type="reset" variant="danger" @click="reloadPage">重新選購</b-button>
 
       </b-card>
     </div>
@@ -124,7 +124,7 @@ export default {
       email : "",
       areanumber : 255,
       address : "",
-      friendcode: "",
+      friendcode: this.$route.params.friendId,
       annotation : "",
       commodities: []
     }
@@ -139,6 +139,9 @@ export default {
     )
   },
   methods: {
+    reloadPage(){
+      document.location.reload();
+    },
     submitOrder() {
       const formData = {
         name :  this.name,
@@ -181,6 +184,7 @@ export default {
           }
       )
 
+      // 資料不為空，即傳送表單
       if (emptyform.length > 0){
         alert(`${emptyform} 未填寫`);
       }else {

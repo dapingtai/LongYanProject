@@ -17,7 +17,7 @@
 
         <b-button type="submit" variant="primary" @click="submitSearch">送出查詢</b-button>
         &nbsp;
-        <b-button type="reset" variant="danger" href="/">返回商城</b-button>
+        <b-button type="reset" variant="danger" @click="reloadPage">返回商城</b-button>
       </b-card>
     </div>
   </b-tab>
@@ -37,6 +37,9 @@ export default {
   }),
 
   methods: {
+    reloadPage(){
+      document.location.reload();
+    },
     submitSearch(){
       const formData = {
         name: this.searchs[0].value,

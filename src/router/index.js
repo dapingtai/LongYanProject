@@ -30,6 +30,11 @@ export default new Router({
     // routes: friendRoutes
     routes: [
         {
+            path: '/',
+            name: 'MainPage',
+            component: MainPage
+        },
+        {
             path: '/:friendId',
             name: 'MainPage',
             component: MainPage

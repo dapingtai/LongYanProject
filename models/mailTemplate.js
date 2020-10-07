@@ -30,11 +30,19 @@ function emailMasterTemplate (newOrder){
                                         </tr>
                                         <tr>
                                             <td style="border:1px solid #8c8c8c" width="280" bgcolor="#efefef" align="center"><span style="font-family:'\\\\005fae\\\\008edf\\\\006b63\\\\009ed1\\\\009ad4';font-size:16px">買家地址</span></td>
-                                            <td style="border:1px solid #8c8c8c" bgcolor="#efefef" align="center"><span style="font-family:'\\\\005fae\\\\008edf\\\\006b63\\\\009ed1\\\\009ad4';font-size:16px">推薦好友</span></td>
+                                            <td style="border:1px solid #8c8c8c" bgcolor="#efefef" align="center"><span style="font-family:'\\\\005fae\\\\008edf\\\\006b63\\\\009ed1\\\\009ad4';font-size:16px">買家電話</span></td>
                                         </tr>
                                         <tr>
                                             <td style="border:1px solid #8c8c8c" width="280" align="center"><span style="font-family:'\\\\005fae\\\\008edf\\\\006b63\\\\009ed1\\\\009ad4';font-size:16px;color:#ec008c">[${newOrder.areanumber}]${newOrder.town}${newOrder.area}${newOrder.address}</span></td>
-                                            <td style="border:1px solid #8c8c8c" align="center"><span style="font-family:'\\\\005fae\\\\008edf\\\\006b63\\\\009ed1\\\\009ad4';font-size:16px;color:#ec008c">${newOrder.friendcode}</span></td>
+                                            <td style="border:1px solid #8c8c8c" align="center"><span style="font-family:'\\\\005fae\\\\008edf\\\\006b63\\\\009ed1\\\\009ad4';font-size:16px;color:#ec008c">${newOrder.phone}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border:1px solid #8c8c8c" width="280" bgcolor="#efefef" align="center"><span style="font-family:'\\\\005fae\\\\008edf\\\\006b63\\\\009ed1\\\\009ad4';font-size:16px">買家信箱</span></td>
+                                            <td style="border:1px solid #8c8c8c" bgcolor="#efefef" align="center"><span style="font-family:'\\\\005fae\\\\008edf\\\\006b63\\\\009ed1\\\\009ad4';font-size:16px">推薦好友</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border:1px solid #8c8c8c" width="280" align="center"><span style="font-family:'\\\\\\\\005fae\\\\\\\\008edf\\\\\\\\006b63\\\\\\\\009ed1\\\\\\\\009ad4';font-size:16px;color:#ec008c">${newOrder.email}</span></td>
+                                            <td style="border:1px solid #8c8c8c" align="center"><span style="font-family:'\\\\\\\\005fae\\\\\\\\008edf\\\\\\\\006b63\\\\\\\\009ed1\\\\\\\\009ad4';font-size:16px;color:#ec008c">${newOrder.friendcode}</span></td>
                                         </tr>  
                                     </tbody>
                                 </table>   
@@ -45,7 +53,7 @@ function emailMasterTemplate (newOrder){
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
-                            <a href="http://127.0.0.1:81/master/orderCheck/${newOrder._id}">
+                            <a href="http://chyt.com.tw:3010/master/orderCheck/${newOrder._id}">
                                        確認訂單 
                             </a>
                         </tr>
@@ -54,8 +62,8 @@ function emailMasterTemplate (newOrder){
                         </tr>
                         <tr>
                             <td>
-                                <p style="font-family:'\\005fae\\008edf\\006b63\\009ed1\\009ad4';font-size:16px;margin:0;padding:0;line-height:26px;color:#ec008c">貼心提醒：</p>
-                                <p> 本產品僅提供 貨到付款 </p>
+                                <p style="font-family:'\\005fae\\008edf\\006b63\\009ed1\\009ad4';font-size:16px;margin:0;padding:0;line-height:26px;color:#ec008c">提醒：</p>
+                                <p> 本產品僅提供 貨到付款 其他付款方式可能為詐騙</p>
                             </td>
                         </tr>
         
@@ -102,7 +110,23 @@ function emailCustomerTemplate (newOrder){
                                         <tr>
                                             <td style="border:1px solid #8c8c8c" width="280" align="center"><span style="font-family:'\\005fae\\008edf\\006b63\\009ed1\\009ad4';font-size:16px;color:#ec008c">龍眼乾</span></td>
                                             <td style="border:1px solid #8c8c8c" align="center"><span style="font-family:'\\005fae\\008edf\\006b63\\009ed1\\009ad4';font-size:16px;color:#ec008c">${newOrder.count.longyan}</span></td>
-                                        </tr> 
+                                        </tr>
+                                        <tr>
+                                            <td style="border:1px solid #8c8c8c" width="280" bgcolor="#efefef" align="center"><span style="font-family:'\\\\\\\\005fae\\\\\\\\008edf\\\\\\\\006b63\\\\\\\\009ed1\\\\\\\\009ad4';font-size:16px">填寫地址</span></td>
+                                            <td style="border:1px solid #8c8c8c" bgcolor="#efefef" align="center"><span style="font-family:'\\\\\\\\005fae\\\\\\\\008edf\\\\\\\\006b63\\\\\\\\009ed1\\\\\\\\009ad4';font-size:16px">填寫電話</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border:1px solid #8c8c8c" width="280" align="center"><span style="font-family:'\\\\\\\\005fae\\\\\\\\008edf\\\\\\\\006b63\\\\\\\\009ed1\\\\\\\\009ad4';font-size:16px;color:#ec008c">[${newOrder.areanumber}]${newOrder.town}${newOrder.area}${newOrder.address}</span></td>
+                                            <td style="border:1px solid #8c8c8c" align="center"><span style="font-family:'\\\\\\\\005fae\\\\\\\\008edf\\\\\\\\006b63\\\\\\\\009ed1\\\\\\\\009ad4';font-size:16px;color:#ec008c">${newOrder.phone}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border:1px solid #8c8c8c" width="280" bgcolor="#efefef" align="center"><span style="font-family:'\\\\\\\\005fae\\\\\\\\008edf\\\\\\\\006b63\\\\\\\\009ed1\\\\\\\\009ad4';font-size:16px">填寫信箱</span></td>
+                                            <td style="border:1px solid #8c8c8c" bgcolor="#efefef" align="center"><span style="font-family:'\\\\\\\\005fae\\\\\\\\008edf\\\\\\\\006b63\\\\\\\\009ed1\\\\\\\\009ad4';font-size:16px">推薦好友</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border:1px solid #8c8c8c" width="280" align="center"><span style="font-family:'\\\\\\\\\\\\\\\\005fae\\\\\\\\\\\\\\\\008edf\\\\\\\\\\\\\\\\006b63\\\\\\\\\\\\\\\\009ed1\\\\\\\\\\\\\\\\009ad4';font-size:16px;color:#ec008c">${newOrder.email}</span></td>
+                                            <td style="border:1px solid #8c8c8c" align="center"><span style="font-family:'\\\\\\\\\\\\\\\\005fae\\\\\\\\\\\\\\\\008edf\\\\\\\\\\\\\\\\006b63\\\\\\\\\\\\\\\\009ed1\\\\\\\\\\\\\\\\009ad4';font-size:16px;color:#ec008c">${newOrder.friendcode}</span></td>
+                                        </tr>  
                                     </tbody>
                                 </table>   
                             </td>
@@ -113,8 +137,8 @@ function emailCustomerTemplate (newOrder){
                         </tr>
                         <tr>
                             <td>
-                                <p style="font-family:'\\005fae\\008edf\\006b63\\009ed1\\009ad4';font-size:16px;margin:0;padding:0;line-height:26px;color:#ec008c">貼心提醒：</p>
-                                <p> 本產品僅提供 貨到付款 </p>
+                                <p style="font-family:'\\005fae\\008edf\\006b63\\009ed1\\009ad4';font-size:16px;margin:0;padding:0;line-height:26px;color:#ec008c">提醒：</p>
+                                <p> 產品僅提供 貨到付款 其他付款方式可能為詐騙 </p>
                             </td>
                         </tr>
         

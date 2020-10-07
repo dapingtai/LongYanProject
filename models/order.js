@@ -13,7 +13,7 @@ const OrederSchema = new mogoose.Schema({
     area:{type: String, required: true},
     areanumber:{type: Number, required: true},
     address:{type: String, required: true},
-    friendcode:{type: String, required:true},
+    friendcode:{type: String },
     count:{
         longyan: {type: Number, required: true}
     },

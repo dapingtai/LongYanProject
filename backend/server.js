@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 /*Credential Information*/
-const credentials = require('../models/credentials');
+const credentials = require('../models/credential');
 
 /*Mongo DB option */
 const mongoose = require('mongoose');
@@ -72,7 +72,7 @@ app.post('/orderAdd',
 
         mailTransport.sendMail(
             {
-                from: '"LongYan Team": dapingtai@gmail.com',
+                from: '"LongYan Team": wangwenshou8@gmail.com',
                 to: req.body.email,
                 subject: '[客戶]訂單確認通知',
                 html: emailCustomerTemplate(newOrder)
@@ -87,7 +87,7 @@ app.post('/orderAdd',
 
         mailTransport.sendMail(
             {
-                from: '"LongYan Team": dapingtai@gmail.com',
+                from: '"LongYan Team": wangwenshou8@gmail.com',
                 to: "zero102x@gmail.com",
                 subject: '[老闆]訂單確認通知',
                 html: emailMasterTemplate(newOrder)
@@ -113,31 +113,36 @@ app.post('/orderSearch',
     console.log("Post API - Search Order");
     console.log(req.body);
     try {
-        let searchOrder = await Order.findOne({name: req.body.name});
-
+        let searchOrder = await Order.find({name: req.body.name});
+        
         if (searchOrder == null){
             res.status(200).send("查無此訂單");
         }else {
-            let endId = searchOrder._id.toString().substr(-3,3);
-            let endPhone = searchOrder.phone.substr(-3, 3);
-            // console.log(endPhone, endId);
-            if(endPhone == (req.body.phone) && endId == (req.body.id)){
-                switch (searchOrder.status){
-                    case "Ready":
-                        res.status(200).send("訂單已送出-待確認");
-                        break;
-                    case "Accept":
-                        res.status(200).send("訂單已確認-配送中");
-                        break;
-                    case "Success":
-                        res.status(200).send("訂單已配送");
-                        break;
+            searchOrder.forEach(
+                (order, index) => {
+                    let endId = order._id.toString().substr(-3,3);
+                    let endPhone = order.phone.substr(-3, 3);
+                    // console.log(endPhone, endId);
+                    if(endPhone == (req.body.phone) && endId == (req.body.id)){
+                        switch (order.status){
+                            case "Ready":
+                                res.status(200).send("訂單已送出-待確認");
+                                break;
+                            case "Accept":
+                                res.status(200).send("訂單已確認-配送中");
+                                break;
+                            case "Success":
+                                res.status(200).send("訂單已配送");
+                                break;
+                        }
+                    }else {
+                        if (index+1 === searchOrder.length){
+                            res.status(200).send("請重新確認查詢名稱，電話及訂單編號");
+                        }
+                    }
                 }
-            }else {
-                res.status(200).send("請確認查詢名稱，電話及訂單編號");
-            }
+            )
         }
-
     }catch (err) {
         console.log("Search error: ", err);
     }
@@ -171,6 +176,6 @@ app.get('/master/orderCheck/:id', async function (req, res) {
 })
 
 // www
-app.listen(81, function () {
-    console.log("app listen port is 81");
+app.listen(3010, function () {
+    console.log("app listen port is 3010");
 })

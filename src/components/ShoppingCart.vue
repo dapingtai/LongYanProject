@@ -189,7 +189,7 @@ export default {
         alert(`${emptyform} 未填寫`);
       }else {
         console.log("表單皆填寫，送出表單");
-        axios.post('http://localhost:81/orderAdd', formData).then(
+        axios.post('http://chyt.com.tw:3010/orderAdd', formData).then(
             (res) =>{
               // console.log(res);
               alert(`下訂成功，您的訂單編號為: ${res.data}`);

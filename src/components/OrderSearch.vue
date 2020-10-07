@@ -49,7 +49,7 @@ export default {
       console.table(formData);
 
 
-      axios.post('http://localhost:81/orderSearch', formData).then(
+      axios.post('http://chyt.com.tw:3010/orderSearch', formData).then(
         (res)=>{
           console.log(res);
           alert(res.data);
